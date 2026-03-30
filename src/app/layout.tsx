@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { ColorSchemeScript } from "@mantine/core";
 import { Providers } from "./providers";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "League Meetings",
-  description: "League Meetings",
+  title: "LeagueStarz",
+  description:
+    "LeagueStarz is your ultimate player profile platform. Discover and compare player profiles, stats, and ratings all in one place. Built for fans, by fans.",
 };
 
 export default function RootLayout({
@@ -15,9 +15,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        <ColorSchemeScript />
-      </head>
       <body>
         <Providers>
           <main>{children}</main>
