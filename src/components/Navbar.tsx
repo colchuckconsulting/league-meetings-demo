@@ -1,6 +1,15 @@
 "use client";
 
-import { Box, Button, Container, Flex, Group, Image, Text } from "@mantine/core";
+import {
+  Box,
+  Button,
+  Container,
+  Flex,
+  Group,
+  Image,
+  Text,
+} from "@mantine/core";
+import Link from "next/link";
 
 const BLUE = "#0064F0";
 
@@ -19,25 +28,15 @@ export function Navbar() {
       <Container size="xl" py="sm">
         <Flex align="center" justify="space-between">
           <Group gap="xl">
-            <a href="/">
+            <Link href="/">
               <Image
                 src="/leaguestarz_01.svg"
                 alt="LeagueStarz"
                 h={30}
                 w="auto"
               />
-            </a>
+            </Link>
             <Group gap="lg" visibleFrom="sm">
-              <Text
-                component="a"
-                href="/"
-                size="sm"
-                fw={500}
-                c="dark"
-                style={{ textDecoration: "none" }}
-              >
-                Home
-              </Text>
               <Text
                 component="a"
                 href="/#players"

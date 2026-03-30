@@ -99,15 +99,15 @@ function HeroSection() {
             style={{ filter: "brightness(0) invert(1)" }}
           />
           <Title order={1} c="white" size="3rem" maw={700} lh={1.2}>
-            Your Ultimate{" "}
+            Get Discovered.{" "}
             <Text component="span" inherit c={GOLD}>
-              Player Profile
+              Get Recruited.
             </Text>{" "}
-            Platform
+            Get Ahead.
           </Title>
           <Text c="rgba(255,255,255,0.8)" size="xl" maw={550}>
-            Discover and compare player profiles, stats, and ratings all in one
-            place. Built for fans, by fans.
+            Build your player profile, showcase your highlights, and connect
+            with coaches actively recruiting — all in one place.
           </Text>
           <Group mt="md">
             <Button
@@ -199,8 +199,10 @@ function PlayerCard({ player }: { player: (typeof players)[number] }) {
           {player.position}
         </Badge>
         <RatingRing rating={player.rating} />
-        <Text size="xs" c="dimmed" tt="uppercase" fw={600}>
-          Overall Rating
+        <Text size="xs" c="dimmed" tt="uppercase" fw={600} ta="center" lh={1.4}>
+          LeagueStarz
+          <br />
+          Rating
         </Text>
       </Flex>
     </Card>
