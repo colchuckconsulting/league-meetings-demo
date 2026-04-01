@@ -92,12 +92,27 @@ function HeroSection() {
       <Container size="xl" py={80} style={{ position: "relative", zIndex: 1 }}>
         <Flex direction="column" align="center" ta="center" gap="lg">
           <Image
-            src="/leaguestarz_02_no_blue.svg"
+            src="/leaguestarz_03.svg"
             alt="LeagueStarz"
             h={80}
             w="auto"
             style={{ filter: "brightness(0) invert(1)" }}
           />
+          <Text
+            component="h1"
+            ff="var(--font-industry)"
+            fw={900}
+            fs="italic"
+            tt="uppercase"
+            c="white"
+            lh={0.95}
+            style={{
+              fontSize: "clamp(3rem, 8vw, 8rem)",
+              letterSpacing: "-0.025em",
+            }}
+          >
+            LeagueStarz
+          </Text>
           <Title order={1} c="white" size="3rem" maw={700} lh={1.2}>
             Get Discovered.{" "}
             <Text component="span" inherit c={GOLD}>
@@ -105,7 +120,14 @@ function HeroSection() {
             </Text>{" "}
             Get Ahead.
           </Title>
-          <Text c="rgba(255,255,255,0.8)" size="xl" maw={550}>
+          <Text
+            c="rgba(255,255,255,0.8)"
+            size="xl"
+            maw={550}
+            ff="var(--font-industry)"
+            fs={"normal"}
+            fw={600}
+          >
             Build your player profile, showcase your highlights, and connect
             with coaches actively recruiting — all in one place.
           </Text>
