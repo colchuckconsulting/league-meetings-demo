@@ -15,6 +15,7 @@ import {
   Text,
   Title,
 } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import { Navbar } from "@/components/Navbar";
 
 const BLUE = "#0064F0";
@@ -29,6 +30,7 @@ const players = [
     initials: "AR",
     gradient: { from: BLUE, to: "#003985" },
     href: "/players/aaron-rodgers",
+    photo: "/aaron_rodgers_hs.webp",
   },
   {
     name: "Larry Allen",
@@ -37,6 +39,7 @@ const players = [
     team: "Dallas Cowboys",
     initials: "LA",
     gradient: { from: GOLD, to: "#e6bf2a" },
+    photo: "/larry_allen.webp",
   },
   {
     name: "Jerry Rice",
@@ -45,6 +48,7 @@ const players = [
     team: "San Francisco 49ers",
     initials: "JR",
     gradient: { from: BLUE, to: "#003985" },
+    photo: "/jerry_rice.jpeg",
   },
   {
     name: "Jon Kitna",
@@ -53,6 +57,7 @@ const players = [
     team: "Detroit Lions",
     initials: "JK",
     gradient: { from: GOLD, to: "#e6bf2a" },
+    photo: "/jon_kitna.webp",
   },
 ];
 
@@ -94,9 +99,9 @@ function HeroSection() {
           <Image
             src="/leaguestarz_03.svg"
             alt="LeagueStarz"
-            h={80}
-            w="auto"
-            style={{ filter: "brightness(0) invert(1)" }}
+            h="auto"
+            className="hero-stagger"
+            style={{ width: "clamp(180px, 40vw, 500px)" }}
           />
           <Text
             component="h1"
@@ -104,8 +109,8 @@ function HeroSection() {
             fw={900}
             fs="italic"
             tt="uppercase"
-            c="white"
             lh={0.95}
+            className="hero-stagger gold-sweep"
             style={{
               fontSize: "clamp(3rem, 8vw, 8rem)",
               letterSpacing: "-0.025em",
@@ -113,7 +118,14 @@ function HeroSection() {
           >
             LeagueStarz
           </Text>
-          <Title order={1} c="white" size="3rem" maw={700} lh={1.2}>
+          <Title
+            order={1}
+            c="white"
+            maw={700}
+            lh={1.2}
+            className="hero-stagger"
+            style={{ fontSize: "clamp(1.5rem, 4vw, 3rem)" }}
+          >
             Get Discovered.{" "}
             <Text component="span" inherit c={GOLD}>
               Get Recruited.
@@ -122,16 +134,17 @@ function HeroSection() {
           </Title>
           <Text
             c="rgba(255,255,255,0.8)"
-            size="xl"
             maw={550}
             ff="var(--font-industry)"
             fs={"normal"}
             fw={600}
+            className="hero-stagger"
+            style={{ fontSize: "clamp(0.9rem, 2vw, 1.25rem)" }}
           >
             Build your player profile, showcase your highlights, and connect
             with coaches actively recruiting — all in one place.
           </Text>
-          <Group mt="md">
+          <Group mt="md" className="hero-stagger">
             <Button
               size="lg"
               style={{ backgroundColor: GOLD, color: "#1a1a1a" }}
@@ -173,60 +186,138 @@ function RatingRing({ rating }: { rating: number }) {
 }
 
 function PlayerCard({ player }: { player: (typeof players)[number] }) {
+  const isMobile = useMediaQuery("(max-width: 48em)");
+
+  const photoBlock = (
+    <Box
+      style={{
+        position: "relative",
+        height: isMobile ? "100%" : 400,
+        width: isMobile ? 120 : undefined,
+        minWidth: isMobile ? 120 : undefined,
+        background: player.photo
+          ? undefined
+          : `linear-gradient(135deg, ${player.gradient.from}, ${player.gradient.to})`,
+        overflow: "hidden",
+        borderRadius: isMobile ? "8px 0 0 8px" : undefined,
+      }}
+    >
+      {player.photo ? (
+        <Image
+          src={player.photo}
+          alt={player.name}
+          h="100%"
+          w="100%"
+          className="player-photo"
+          style={{
+            objectFit: "cover",
+            objectPosition: "top",
+            transition: "transform 0.4s ease",
+          }}
+        />
+      ) : (
+        <Flex
+          align="center"
+          justify="center"
+          h="100%"
+          className="player-photo"
+          style={{ transition: "transform 0.4s ease" }}
+        >
+          <Text
+            c="white"
+            fw={700}
+            style={{ fontSize: isMobile ? "2rem" : "3rem", opacity: 0.6 }}
+          >
+            {player.initials}
+          </Text>
+        </Flex>
+      )}
+      <Badge
+        size="sm"
+        variant="filled"
+        style={{
+          position: "absolute",
+          top: 8,
+          right: 8,
+          backgroundColor: BLUE,
+        }}
+      >
+        {player.position}
+      </Badge>
+    </Box>
+  );
+
+  const infoBlock = (
+    <Flex
+      direction="column"
+      justify="center"
+      gap="sm"
+      p={isMobile ? "sm" : "lg"}
+      align={isMobile ? "flex-start" : "center"}
+      style={{ flex: 1 }}
+    >
+      <Box ta={isMobile ? "left" : "center"}>
+        <Text fw={700} size={isMobile ? "md" : "lg"}>
+          {player.name}
+        </Text>
+        <Text size="sm" c="dimmed">
+          {player.team}
+        </Text>
+      </Box>
+      <Group gap="sm" align="center">
+        <RatingRing rating={player.rating} />
+        <Box>
+          <Text size="xs" c="dimmed" tt="uppercase" fw={600} lh={1.4}>
+            LeagueStarz
+            <br />
+            Rating
+          </Text>
+        </Box>
+      </Group>
+    </Flex>
+  );
+
   const card = (
     <Card
       shadow="sm"
       radius="lg"
-      padding="xl"
+      padding={0}
       withBorder
       style={{
         borderColor: "#e9ecef",
         transition: "transform 150ms ease, box-shadow 150ms ease",
         cursor: player.href ? "pointer" : "default",
         height: "100%",
+        overflow: "hidden",
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.transform = "translateY(-4px)";
         e.currentTarget.style.boxShadow = "0 12px 24px rgba(0, 100, 240, 0.12)";
+        const img = e.currentTarget.querySelector(
+          ".player-photo",
+        ) as HTMLElement;
+        if (img) img.style.transform = "scale(1.05)";
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.transform = "translateY(0)";
         e.currentTarget.style.boxShadow = "";
+        const img = e.currentTarget.querySelector(
+          ".player-photo",
+        ) as HTMLElement;
+        if (img) img.style.transform = "scale(1)";
       }}
     >
-      <Flex direction="column" align="center" gap="md">
-        <Avatar
-          size={90}
-          radius="xl"
-          variant="gradient"
-          gradient={player.gradient}
-          style={{ fontSize: "1.5rem", fontWeight: 700 }}
-        >
-          {player.initials}
-        </Avatar>
-        <Box ta="center">
-          <Text fw={700} size="lg">
-            {player.name}
-          </Text>
-          <Text size="sm" c="dimmed">
-            {player.team}
-          </Text>
-        </Box>
-        <Badge
-          size="lg"
-          variant="light"
-          color={BLUE}
-          style={{ fontWeight: 600 }}
-        >
-          {player.position}
-        </Badge>
-        <RatingRing rating={player.rating} />
-        <Text size="xs" c="dimmed" tt="uppercase" fw={600} ta="center" lh={1.4}>
-          LeagueStarz
-          <br />
-          Rating
-        </Text>
-      </Flex>
+      {isMobile ? (
+        <Flex direction="row">
+          {photoBlock}
+          {infoBlock}
+        </Flex>
+      ) : (
+        <>
+          {photoBlock}
+          {infoBlock}
+        </>
+      )}
     </Card>
   );
 

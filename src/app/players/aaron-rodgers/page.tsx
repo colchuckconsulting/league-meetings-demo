@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {
   Avatar,
   Badge,
@@ -12,6 +13,7 @@ import {
   Group,
   RingProgress,
   SimpleGrid,
+  SegmentedControl,
   Stack,
   Table,
   Text,
@@ -855,8 +857,119 @@ function SeasonRowMobile({
   );
 }
 
+function TrendLine({
+  data,
+  color,
+  maxVal,
+  width,
+  height,
+  padX,
+  padY,
+}: {
+  data: number[];
+  color: string;
+  maxVal: number;
+  width: number;
+  height: number;
+  padX: number;
+  padY: number;
+}) {
+  const plotW = width - padX * 2;
+  const plotH = height - padY * 2;
+  const points = data.map((v, i) => ({
+    x: padX + (i / (data.length - 1)) * plotW,
+    y: padY + plotH - (v / maxVal) * plotH,
+  }));
+  const pathD = points.map((p, i) => `${i === 0 ? "M" : "L"}${p.x},${p.y}`).join(" ");
+
+  return (
+    <g>
+      <path d={pathD} fill="none" stroke={color} strokeWidth={2.5} strokeLinejoin="round" strokeLinecap="round" />
+      {points.map((p, i) => (
+        <circle key={i} cx={p.x} cy={p.y} r={3.5} fill={color} />
+      ))}
+    </g>
+  );
+}
+
+function SeasonTrendChart() {
+  const w = 700;
+  const h = 300;
+  const padX = 50;
+  const padY = 30;
+  const plotW = w - padX * 2;
+
+  const yards = seasonData.map((s) => s.yards);
+  const tds = seasonData.map((s) => s.tds);
+  const ratings = seasonData.map((s) => s.rating);
+
+  const maxYards = Math.max(...yards);
+  const maxTds = Math.max(...tds);
+  const maxRating = 130;
+
+  const gridLines = 4;
+
+  return (
+    <Box>
+      <Group gap="xl" mb="md" justify="center">
+        <Group gap={6}>
+          <Box style={{ width: 12, height: 3, backgroundColor: BLUE, borderRadius: 2 }} />
+          <Text size="xs" c="dimmed" fw={500}>Pass Yards</Text>
+        </Group>
+        <Group gap={6}>
+          <Box style={{ width: 12, height: 3, backgroundColor: GOLD, borderRadius: 2 }} />
+          <Text size="xs" c="dimmed" fw={500}>Touchdowns</Text>
+        </Group>
+        <Group gap={6}>
+          <Box style={{ width: 12, height: 3, backgroundColor: "#22c55e", borderRadius: 2 }} />
+          <Text size="xs" c="dimmed" fw={500}>Passer Rating</Text>
+        </Group>
+      </Group>
+      <Box style={{ overflowX: "auto" }}>
+        <svg viewBox={`0 0 ${w} ${h}`} width="100%" style={{ minWidth: 500 }}>
+          {Array.from({ length: gridLines + 1 }, (_, i) => {
+            const y = padY + ((h - padY * 2) / gridLines) * i;
+            return (
+              <line key={i} x1={padX} y1={y} x2={w - padX} y2={y} stroke="#e9ecef" strokeWidth={1} />
+            );
+          })}
+          {seasonData.map((s, i) => {
+            const x = padX + (i / (seasonData.length - 1)) * plotW;
+            return (
+              <text key={i} x={x} y={h - 5} textAnchor="middle" fontSize={10} fill="#868e96">
+                {s.year}
+              </text>
+            );
+          })}
+          <TrendLine data={yards} color={BLUE} maxVal={maxYards} width={w} height={h} padX={padX} padY={padY} />
+          <TrendLine data={tds} color={GOLD} maxVal={maxTds} width={w} height={h} padX={padX} padY={padY} />
+          <TrendLine data={ratings} color="#22c55e" maxVal={maxRating} width={w} height={h} padX={padX} padY={padY} />
+        </svg>
+      </Box>
+      <SimpleGrid cols={{ base: 3 }} spacing="md" mt="md">
+        <Card padding="sm" radius="sm" style={{ backgroundColor: "#f8f9fa", textAlign: "center" }}>
+          <Text size="xs" c="dimmed" fw={500}>Peak Yards</Text>
+          <Text fw={700} c={BLUE}>{Math.max(...yards).toLocaleString()}</Text>
+          <Text size="xs" c="dimmed">{seasonData[yards.indexOf(Math.max(...yards))].year}</Text>
+        </Card>
+        <Card padding="sm" radius="sm" style={{ backgroundColor: "#f8f9fa", textAlign: "center" }}>
+          <Text size="xs" c="dimmed" fw={500}>Peak TDs</Text>
+          <Text fw={700} c={GOLD}>{Math.max(...tds)}</Text>
+          <Text size="xs" c="dimmed">{seasonData[tds.indexOf(Math.max(...tds))].year}</Text>
+        </Card>
+        <Card padding="sm" radius="sm" style={{ backgroundColor: "#f8f9fa", textAlign: "center" }}>
+          <Text size="xs" c="dimmed" fw={500}>Peak Rating</Text>
+          <Text fw={700} c="#22c55e">{Math.max(...ratings).toFixed(1)}</Text>
+          <Text size="xs" c="dimmed">{seasonData[ratings.indexOf(Math.max(...ratings))].year}</Text>
+        </Card>
+      </SimpleGrid>
+    </Box>
+  );
+}
+
 function SeasonTable() {
   const isMobile = useMediaQuery("(max-width: 48em)");
+  const [view, setView] = useState<string>("table");
 
   return (
     <Card
@@ -865,10 +978,21 @@ function SeasonTable() {
       withBorder
       style={{ borderColor: "#e9ecef" }}
     >
-      <Title order={4} mb="md">
-        Season-by-Season
-      </Title>
-      {isMobile ? (
+      <Group justify="space-between" mb="md" wrap="wrap">
+        <Title order={4}>Season-by-Season</Title>
+        <SegmentedControl
+          size="xs"
+          value={view}
+          onChange={setView}
+          data={[
+            { label: "Table", value: "table" },
+            { label: "Trends", value: "trends" },
+          ]}
+        />
+      </Group>
+      {view === "trends" ? (
+        <SeasonTrendChart />
+      ) : isMobile ? (
         <Stack gap={0}>
           {seasonData.map((s, i) => (
             <SeasonRowMobile key={s.year} s={s} index={i} />
@@ -988,18 +1112,15 @@ export default function AaronRodgersProfile() {
             gap="xl"
           >
             <Avatar
-              size={120}
+              size={160}
               radius="xl"
-              variant="gradient"
-              gradient={{ from: GOLD, to: "#e6bf2a" }}
+              src="/aaron_rodgers_hs.webp"
+              alt="Aaron Rodgers"
               style={{
-                fontSize: "2.5rem",
-                fontWeight: 700,
-                border: "4px solid rgba(255,255,255,0.2)",
+                border: "5px solid rgba(255,255,255,0.3)",
+                boxShadow: "0 8px 24px rgba(0,0,0,0.3)",
               }}
-            >
-              AR
-            </Avatar>
+            />
             <Flex direction="column" gap={4}>
               <Group gap="sm">
                 <Title order={1} c="white" size="2.5rem">

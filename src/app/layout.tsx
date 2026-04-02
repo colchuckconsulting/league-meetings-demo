@@ -7,6 +7,28 @@ export const metadata: Metadata = {
   title: "LeagueStarz",
   description:
     "LeagueStarz is your ultimate player profile platform. Discover and compare player profiles, stats, and ratings all in one place. Built for fans, by fans.",
+  metadataBase: new URL("http://leaguestarz.com"),
+  openGraph: {
+    title: "LeagueStarz",
+    description:
+      "Discover and compare player profiles, stats, and ratings all in one place.",
+    images: [
+      {
+        url: "/leaguestarz_01.png",
+        width: 1200,
+        height: 630,
+        alt: "LeagueStarz",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "LeagueStarz",
+    description:
+      "Discover and compare player profiles, stats, and ratings all in one place.",
+    images: ["/leaguestarz_01.png"],
+  },
 };
 
 export default function RootLayout({

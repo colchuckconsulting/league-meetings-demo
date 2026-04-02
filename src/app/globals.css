@@ -7,3 +7,40 @@ html {
 body {
   margin: 0;
 }
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-stagger {
+  opacity: 0;
+  animation: fadeInUp 0.7s ease-out forwards;
+}
+
+.hero-stagger:nth-child(1) { animation-delay: 0.1s; }
+.hero-stagger:nth-child(2) { animation-delay: 0.25s; }
+.hero-stagger:nth-child(3) { animation-delay: 0.4s; }
+.hero-stagger:nth-child(4) { animation-delay: 0.55s; }
+.hero-stagger:nth-child(5) { animation-delay: 0.7s; }
+
+.gold-sweep {
+  background: linear-gradient(90deg, white 0%, white 50%, #FCD43D 50%, #FCD43D 100%);
+  background-size: 200% 100%;
+  background-position: 0% 0%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: background-position 0.5s ease;
+  cursor: default;
+}
+
+.gold-sweep:hover {
+  background-position: -100% 0%;
+}
