@@ -14,7 +14,7 @@ export const metadata: Metadata = {
       "Discover and compare player profiles, stats, and ratings all in one place.",
     images: [
       {
-        url: "/leaguestarz_01.png",
+        url: "/leaguestarz_preview.png",
         width: 1200,
         height: 630,
         alt: "LeagueStarz",
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     title: "LeagueStarz",
     description:
       "Discover and compare player profiles, stats, and ratings all in one place.",
-    images: ["/leaguestarz_01.png"],
+    images: ["/leaguestarz_preview.png"],
   },
 };
 
