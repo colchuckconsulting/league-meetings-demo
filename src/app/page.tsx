@@ -30,7 +30,7 @@ const players = [
     initials: "AR",
     gradient: { from: BLUE, to: "#003985" },
     href: "/players/aaron-rodgers",
-    photo: "/aaron_rodgers_hs.webp",
+    photo: "/aaron_rodgers_college.jpg",
   },
   {
     name: "Larry Allen",

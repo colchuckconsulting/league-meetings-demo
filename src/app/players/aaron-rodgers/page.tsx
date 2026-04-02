@@ -880,11 +880,20 @@ function TrendLine({
     x: padX + (i / (data.length - 1)) * plotW,
     y: padY + plotH - (v / maxVal) * plotH,
   }));
-  const pathD = points.map((p, i) => `${i === 0 ? "M" : "L"}${p.x},${p.y}`).join(" ");
+  const pathD = points
+    .map((p, i) => `${i === 0 ? "M" : "L"}${p.x},${p.y}`)
+    .join(" ");
 
   return (
     <g>
-      <path d={pathD} fill="none" stroke={color} strokeWidth={2.5} strokeLinejoin="round" strokeLinecap="round" />
+      <path
+        d={pathD}
+        fill="none"
+        stroke={color}
+        strokeWidth={2.5}
+        strokeLinejoin="round"
+        strokeLinecap="round"
+      />
       {points.map((p, i) => (
         <circle key={i} cx={p.x} cy={p.y} r={3.5} fill={color} />
       ))}
@@ -913,16 +922,43 @@ function SeasonTrendChart() {
     <Box>
       <Group gap="xl" mb="md" justify="center">
         <Group gap={6}>
-          <Box style={{ width: 12, height: 3, backgroundColor: BLUE, borderRadius: 2 }} />
-          <Text size="xs" c="dimmed" fw={500}>Pass Yards</Text>
+          <Box
+            style={{
+              width: 12,
+              height: 3,
+              backgroundColor: BLUE,
+              borderRadius: 2,
+            }}
+          />
+          <Text size="xs" c="dimmed" fw={500}>
+            Pass Yards
+          </Text>
         </Group>
         <Group gap={6}>
-          <Box style={{ width: 12, height: 3, backgroundColor: GOLD, borderRadius: 2 }} />
-          <Text size="xs" c="dimmed" fw={500}>Touchdowns</Text>
+          <Box
+            style={{
+              width: 12,
+              height: 3,
+              backgroundColor: GOLD,
+              borderRadius: 2,
+            }}
+          />
+          <Text size="xs" c="dimmed" fw={500}>
+            Touchdowns
+          </Text>
         </Group>
         <Group gap={6}>
-          <Box style={{ width: 12, height: 3, backgroundColor: "#22c55e", borderRadius: 2 }} />
-          <Text size="xs" c="dimmed" fw={500}>Passer Rating</Text>
+          <Box
+            style={{
+              width: 12,
+              height: 3,
+              backgroundColor: "#22c55e",
+              borderRadius: 2,
+            }}
+          />
+          <Text size="xs" c="dimmed" fw={500}>
+            Passer Rating
+          </Text>
         </Group>
       </Group>
       <Box style={{ overflowX: "auto" }}>
@@ -930,37 +966,106 @@ function SeasonTrendChart() {
           {Array.from({ length: gridLines + 1 }, (_, i) => {
             const y = padY + ((h - padY * 2) / gridLines) * i;
             return (
-              <line key={i} x1={padX} y1={y} x2={w - padX} y2={y} stroke="#e9ecef" strokeWidth={1} />
+              <line
+                key={i}
+                x1={padX}
+                y1={y}
+                x2={w - padX}
+                y2={y}
+                stroke="#e9ecef"
+                strokeWidth={1}
+              />
             );
           })}
           {seasonData.map((s, i) => {
             const x = padX + (i / (seasonData.length - 1)) * plotW;
             return (
-              <text key={i} x={x} y={h - 5} textAnchor="middle" fontSize={10} fill="#868e96">
+              <text
+                key={i}
+                x={x}
+                y={h - 5}
+                textAnchor="middle"
+                fontSize={10}
+                fill="#868e96"
+              >
                 {s.year}
               </text>
             );
           })}
-          <TrendLine data={yards} color={BLUE} maxVal={maxYards} width={w} height={h} padX={padX} padY={padY} />
-          <TrendLine data={tds} color={GOLD} maxVal={maxTds} width={w} height={h} padX={padX} padY={padY} />
-          <TrendLine data={ratings} color="#22c55e" maxVal={maxRating} width={w} height={h} padX={padX} padY={padY} />
+          <TrendLine
+            data={yards}
+            color={BLUE}
+            maxVal={maxYards}
+            width={w}
+            height={h}
+            padX={padX}
+            padY={padY}
+          />
+          <TrendLine
+            data={tds}
+            color={GOLD}
+            maxVal={maxTds}
+            width={w}
+            height={h}
+            padX={padX}
+            padY={padY}
+          />
+          <TrendLine
+            data={ratings}
+            color="#22c55e"
+            maxVal={maxRating}
+            width={w}
+            height={h}
+            padX={padX}
+            padY={padY}
+          />
         </svg>
       </Box>
       <SimpleGrid cols={{ base: 3 }} spacing="md" mt="md">
-        <Card padding="sm" radius="sm" style={{ backgroundColor: "#f8f9fa", textAlign: "center" }}>
-          <Text size="xs" c="dimmed" fw={500}>Peak Yards</Text>
-          <Text fw={700} c={BLUE}>{Math.max(...yards).toLocaleString()}</Text>
-          <Text size="xs" c="dimmed">{seasonData[yards.indexOf(Math.max(...yards))].year}</Text>
+        <Card
+          padding="sm"
+          radius="sm"
+          style={{ backgroundColor: "#f8f9fa", textAlign: "center" }}
+        >
+          <Text size="xs" c="dimmed" fw={500}>
+            Peak Yards
+          </Text>
+          <Text fw={700} c={BLUE}>
+            {Math.max(...yards).toLocaleString()}
+          </Text>
+          <Text size="xs" c="dimmed">
+            {seasonData[yards.indexOf(Math.max(...yards))].year}
+          </Text>
         </Card>
-        <Card padding="sm" radius="sm" style={{ backgroundColor: "#f8f9fa", textAlign: "center" }}>
-          <Text size="xs" c="dimmed" fw={500}>Peak TDs</Text>
-          <Text fw={700} c={GOLD}>{Math.max(...tds)}</Text>
-          <Text size="xs" c="dimmed">{seasonData[tds.indexOf(Math.max(...tds))].year}</Text>
+        <Card
+          padding="sm"
+          radius="sm"
+          style={{ backgroundColor: "#f8f9fa", textAlign: "center" }}
+        >
+          <Text size="xs" c="dimmed" fw={500}>
+            Peak TDs
+          </Text>
+          <Text fw={700} c={GOLD}>
+            {Math.max(...tds)}
+          </Text>
+          <Text size="xs" c="dimmed">
+            {seasonData[tds.indexOf(Math.max(...tds))].year}
+          </Text>
         </Card>
-        <Card padding="sm" radius="sm" style={{ backgroundColor: "#f8f9fa", textAlign: "center" }}>
-          <Text size="xs" c="dimmed" fw={500}>Peak Rating</Text>
-          <Text fw={700} c="#22c55e">{Math.max(...ratings).toFixed(1)}</Text>
-          <Text size="xs" c="dimmed">{seasonData[ratings.indexOf(Math.max(...ratings))].year}</Text>
+        <Card
+          padding="sm"
+          radius="sm"
+          style={{ backgroundColor: "#f8f9fa", textAlign: "center" }}
+        >
+          <Text size="xs" c="dimmed" fw={500}>
+            Peak Rating
+          </Text>
+          <Text fw={700} c="#22c55e">
+            {Math.max(...ratings).toFixed(1)}
+          </Text>
+          <Text size="xs" c="dimmed">
+            {seasonData[ratings.indexOf(Math.max(...ratings))].year}
+          </Text>
         </Card>
       </SimpleGrid>
     </Box>
@@ -1114,7 +1219,7 @@ export default function AaronRodgersProfile() {
             <Avatar
               size={160}
               radius="xl"
-              src="/aaron_rodgers_hs.webp"
+              src="/aaron_rodgers_college_1.png"
               alt="Aaron Rodgers"
               style={{
                 border: "5px solid rgba(255,255,255,0.3)",
