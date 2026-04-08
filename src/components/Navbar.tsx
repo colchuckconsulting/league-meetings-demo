@@ -49,13 +49,13 @@ export function Navbar() {
               </Text>
               <Text
                 component="a"
-                href="#"
+                href="/league-meeting"
                 size="sm"
                 fw={500}
                 c="dark"
                 style={{ textDecoration: "none" }}
               >
-                About
+                League Meeting
               </Text>
             </Group>
           </Group>

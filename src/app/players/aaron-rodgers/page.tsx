@@ -1421,9 +1421,59 @@ export default function AaronRodgersProfile() {
                 ))}
               </SimpleGrid>
             </Card>
+
           </Grid.Col>
         </Grid>
       </Container>
+
+      <Box style={{ backgroundColor: "#f8f9fa" }}>
+        <Container size="xl" py={40}>
+          <Group gap="sm" mb="xs">
+            <ThemeIcon
+              size={36}
+              radius="md"
+              style={{ backgroundColor: BLUE }}
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path d="M8 5v14l11-7L8 5z" fill="white" />
+              </svg>
+            </ThemeIcon>
+            <Title order={3}>Featured Video</Title>
+          </Group>
+          <Text size="sm" c="dimmed" mb="lg">
+            Career highlights and memorable moments
+          </Text>
+          <Card
+            padding={0}
+            radius="lg"
+            style={{ overflow: "hidden", boxShadow: "0 4px 20px rgba(0,0,0,0.08)" }}
+          >
+            <Box
+              style={{
+                position: "relative",
+                paddingBottom: "56.25%",
+                height: 0,
+                overflow: "hidden",
+              }}
+            >
+              <iframe
+                src="https://www.youtube.com/embed/hpkUggWpAnI?si=nwWpB5bZD7T1uEEA"
+                title="Aaron Rodgers Highlights"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                  border: "none",
+                }}
+              />
+            </Box>
+          </Card>
+        </Container>
+      </Box>
 
       <Divider my={0} />
 
